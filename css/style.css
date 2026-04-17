@@ -6,10 +6,10 @@
 /* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* ── Cube geometry ── */
-  --cube-w:      440px;   /* cube edge length / depth */
-  --cube-h:      520px;   /* face height — taller than width to fit register form */
+  --cube-w:      440px;   /* cube edge length */
+  --cube-h:      440px;   /* keep equal to --cube-w for true cube geometry */
   --cube-half-w: 220px;   /* translateZ for front/back/left/right faces */
-  --cube-half-h: 260px;   /* translateZ for top/bottom faces (half of cube-h) */
+  --cube-half-h: 220px;   /* translateZ for top/bottom faces */
   --perspective: 1100px;
 
   /* ── Cube transition ── */
@@ -200,13 +200,13 @@ button, input { font-family: inherit; }
 
 /* ─── Main Layout ────────────────────────────────────────────── */
 #app-main {
-  flex: 1; display: flex; padding-top: 100px; position: relative; z-index: 1;
+  flex: 1; display: flex; padding-top: 58px; position: relative; z-index: 1;
 }
 
 #scene-wrapper {
   flex: 1; display: flex; align-items: center; justify-content: center;
   padding: 32px 20px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 58px);
 }
 
 /* ─── 3D Scene ───────────────────────────────────────────────── */
@@ -638,7 +638,7 @@ button, input { font-family: inherit; }
 /* ─── Face Footer ────────────────────────────────────────────── */
 .face-footer {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; margin-top: 14px; padding-top: 8px;
+  gap: 10px; margin-top: 14px; padding-top: 12px;
   border-top: 1px solid var(--border);
   flex-shrink: 0;
 }
