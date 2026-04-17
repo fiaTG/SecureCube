@@ -6,10 +6,10 @@
 /* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* ── Cube geometry ── */
-  --cube-w:      440px;   /* width = depth (keeps side faces square) */
-  --cube-h:      570px;   /* height — tall enough for all form content */
-  --cube-half-w: 220px;   /* translateZ for front/back/left/right faces */
-  --cube-half-h: 285px;   /* translateZ for top/bottom faces */
+  --cube-w:      480px;   /* cube edge length */
+  --cube-h:      480px;   /* keep equal to --cube-w for true cube geometry */
+  --cube-half-w: 240px;   /* translateZ for front/back/left/right faces */
+  --cube-half-h: 240px;   /* translateZ for top/bottom faces */
   --perspective: 1100px;
 
   /* ── Cube transition ── */
@@ -793,10 +793,10 @@ button, input { font-family: inherit; }
 /* ── Tablet (≤ 620px) ── */
 @media (max-width: 620px) {
   :root {
-    --cube-w:      380px;
-    --cube-h:      490px;
-    --cube-half-w: 190px;
-    --cube-half-h: 245px;
+    --cube-w:      400px;
+    --cube-h:      400px;
+    --cube-half-w: 200px;
+    --cube-half-h: 200px;
     --perspective: 960px;
     --tilt-x: -5deg;
     --tilt-y: -8deg;
@@ -810,9 +810,9 @@ button, input { font-family: inherit; }
 @media (max-width: 460px) {
   :root {
     --cube-w:      calc(100vw - 32px);
-    --cube-h:      calc((100vw - 32px) * 1.40);
+    --cube-h:      calc(100vw - 32px);
     --cube-half-w: calc((100vw - 32px) / 2);
-    --cube-half-h: calc((100vw - 32px) * 0.70);
+    --cube-half-h: calc((100vw - 32px) / 2);
     --perspective: calc((100vw - 32px) * 2.5);
     --tilt-x: -4deg;
     --tilt-y: -6deg;
