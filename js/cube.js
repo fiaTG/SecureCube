@@ -7,6 +7,7 @@
 'use strict';
 
 const CubeController = (() => {
+  const FLAT_MOBILE_QUERY = '(max-width: 768px)';
 
   // ── Face → cube transform map ──────────────────────────────────────────
   // Each value is the CSS transform applied to #cube to bring that face
@@ -27,6 +28,10 @@ const CubeController = (() => {
   let _currentFace     = 'login';
   let _isTransitioning = false;
   let _onTransitionEnd = null;
+
+  function _isFlatMobileMode() {
+    return window.matchMedia(FLAT_MOBILE_QUERY).matches;
+  }
 
   // ── Stage activation (idle → interactive) ─────────────────────────────
   function _activateStage(animate = true) {
@@ -56,7 +61,7 @@ const CubeController = (() => {
     _cubeEl.dataset.face = _currentFace;
 
     // Start in dramatic idle presentation state
-    if (_stageEl) _stageEl.classList.add('is-idle');
+    if (_stageEl && !_isFlatMobileMode()) _stageEl.classList.add('is-idle');
 
     // Activate on first click or focus anywhere in the scene
     const sceneWrapper = document.getElementById('scene-wrapper');
@@ -64,6 +69,19 @@ const CubeController = (() => {
       sceneWrapper.addEventListener('click',   () => _activateStage(true), { once: true });
       sceneWrapper.addEventListener('focusin', () => _activateStage(true), { once: true });
     }
+
+    const mobileQuery = window.matchMedia(FLAT_MOBILE_QUERY);
+    const syncMode = () => {
+      if (!_cubeEl || !_stageEl) return;
+      if (mobileQuery.matches) {
+        _stageEl.classList.remove('is-idle');
+        _cubeEl.style.transform = 'none';
+      } else if (!_stageEl.classList.contains('is-idle')) {
+        // Keep interactive state on desktop once user has interacted.
+      }
+    };
+    syncMode();
+    mobileQuery.addEventListener('change', syncMode);
 
     _cubeEl.addEventListener('transitionend', (e) => {
       if (e.propertyName !== 'transform') return;
@@ -96,11 +114,18 @@ const CubeController = (() => {
     }
 
     _activateStage(true);
-    _isTransitioning = true;
     _currentFace = faceName;
-    _onTransitionEnd = onDone || null;
     _cubeEl.dataset.face = faceName;
+    if (_isFlatMobileMode()) {
+      _isTransitioning = false;
+      _onTransitionEnd = null;
+      _cubeEl.style.transform = 'none';
+      if (typeof onDone === 'function') requestAnimationFrame(() => onDone(faceName));
+      return;
+    }
 
+    _isTransitioning = true;
+    _onTransitionEnd = onDone || null;
     _cubeEl.style.transform = FACE_TRANSFORMS[faceName];
 
     // Fallback: if transitionend never fires (e.g. display:none), resolve after timeout
