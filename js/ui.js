@@ -501,14 +501,16 @@ function initParticles() {
   function getColors() {
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     return {
-      dot:  dark ? 'rgba(100, 160, 255, 0.45)' : 'rgba(37, 99, 235, 0.30)',
-      line: dark ? 'rgba(100, 160, 255, '      : 'rgba(37, 99, 235, ',
+      dot:          dark ? 'rgba(100, 160, 255, 0.45)' : 'rgba(37, 99, 235, 0.46)',
+      line:         dark ? 'rgba(100, 160, 255, '      : 'rgba(37, 99, 235, ',
+      lineMaxAlpha: dark ? 0.40 : 0.62,
+      lineWidth:    dark ? 0.8 : 1.0,
     };
   }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    const { dot, line } = getColors();
+    const { dot, line, lineMaxAlpha, lineWidth } = getColors();
 
     // Update positions
     for (const p of particles) {
@@ -528,7 +530,7 @@ function initParticles() {
     }
 
     // Draw lines only between particles in the same or adjacent cells
-    ctx.lineWidth = 0.8;
+    ctx.lineWidth = lineWidth;
     for (let i = 0; i < particles.length; i++) {
       const cx = Math.floor(particles[i].x / cellSize);
       const cy = Math.floor(particles[i].y / cellSize);
@@ -542,7 +544,7 @@ function initParticles() {
             const dy   = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < MAX_DIST) {
-              const alpha = (1 - dist / MAX_DIST) * 0.4;
+              const alpha = (1 - dist / MAX_DIST) * lineMaxAlpha;
               ctx.beginPath();
               ctx.strokeStyle = `${line}${alpha.toFixed(3)})`;
               ctx.moveTo(particles[i].x, particles[i].y);
