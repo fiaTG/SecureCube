@@ -148,6 +148,10 @@ button, input { font-family: inherit; }
   position: fixed; inset: 0;
   width: 100%; height: 100%;
   pointer-events: none; z-index: 0;
+  opacity: 0.74;
+}
+
+[data-theme="dark"] #bg-canvas {
   opacity: 0.5;
 }
 
@@ -846,19 +850,11 @@ button, input { font-family: inherit; }
 /* ── Tablet (≤ 620px) ── */
 @media (max-width: 620px) {
   :root {
-<<<<<<< HEAD
-    --cube-w:      400px;
-    --cube-h:      400px;
-    --cube-half-w: 200px;
-    --cube-half-h: 200px;
-    --perspective: 960px;
-=======
     --cube-w:      360px;
     --cube-h:      360px;
     --cube-half-w: 180px;
     --cube-half-h: 180px;
     --perspective: 900px;
->>>>>>> origin/codex/improve-cube-visual-design-beejzu
     --tilt-x: -5deg;
     --tilt-y: -8deg;
   }
@@ -870,19 +866,11 @@ button, input { font-family: inherit; }
 /* ── Mobile (≤ 460px) ── */
 @media (max-width: 460px) {
   :root {
-<<<<<<< HEAD
-    --cube-w:      calc(100vw - 32px);
-    --cube-h:      calc(100vw - 32px);
-    --cube-half-w: calc((100vw - 32px) / 2);
-    --cube-half-h: calc((100vw - 32px) / 2);
-    --perspective: calc((100vw - 32px) * 2.5);
-=======
     --cube-w:      clamp(280px, calc(100vw - 44px), 340px);
     --cube-h:      clamp(280px, calc(100vw - 44px), 340px);
     --cube-half-w: calc(var(--cube-w) / 2);
     --cube-half-h: calc(var(--cube-h) / 2);
     --perspective: calc(var(--cube-w) * 2.2);
->>>>>>> origin/codex/improve-cube-visual-design-beejzu
     --tilt-x: -4deg;
     --tilt-y: -6deg;
   }
