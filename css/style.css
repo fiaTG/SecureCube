@@ -849,13 +849,24 @@ button, input { font-family: inherit; }
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Tablet (≤ 620px) ── */
+@media (max-width: 900px) {
+  :root {
+    --cube-w:      400px;
+    --cube-h:      400px;
+    --cube-half-w: 200px;
+    --cube-half-h: 200px;
+    --perspective: 980px;
+  }
+}
+
+/* ── Tablet (≤ 620px) ── */
 @media (max-width: 620px) {
   :root {
-    --cube-w:      360px;
-    --cube-h:      360px;
-    --cube-half-w: 180px;
-    --cube-half-h: 180px;
-    --perspective: 900px;
+    --cube-w:      clamp(320px, min(calc(100vw - 56px), calc(100dvh - 160px)), 360px);
+    --cube-h:      clamp(320px, min(calc(100vw - 56px), calc(100dvh - 160px)), 360px);
+    --cube-half-w: calc(var(--cube-w) / 2);
+    --cube-half-h: calc(var(--cube-h) / 2);
+    --perspective: calc(var(--cube-w) * 2.45);
     --tilt-x: -5deg;
     --tilt-y: -8deg;
   }
@@ -867,31 +878,38 @@ button, input { font-family: inherit; }
 /* ── Mobile (≤ 460px) ── */
 @media (max-width: 460px) {
   :root {
-    --cube-w:      clamp(280px, calc(100vw - 44px), 340px);
-    --cube-h:      clamp(280px, min(calc(100vw - 44px), calc(100svh - 160px)), 340px);
+    --cube-w:      clamp(256px, min(calc(100vw - 32px), calc(100dvh - 132px)), 312px);
+    --cube-h:      clamp(256px, min(calc(100vw - 32px), calc(100dvh - 132px)), 312px);
     --cube-half-w: calc(var(--cube-w) / 2);
     --cube-half-h: calc(var(--cube-h) / 2);
-    --perspective: calc(var(--cube-w) * 2.2);
+    --perspective: calc(var(--cube-w) * 2.35);
     --tilt-x: -4deg;
     --tilt-y: -6deg;
   }
 
-  #scene-wrapper { padding: 18px 12px 24px; }
+  #scene-wrapper { padding: 12px 10px 18px; }
   #app-header    { padding: 0 16px; }
+  .brand-badge   { display: none; }
   .brand-name    { font-size: 15px; }
   #cube-idle-hint { bottom: -30px; font-size: 11px; letter-spacing: 0.4px; }
 
-  .face-inner    { padding: 16px 16px 13px; }
+  .face-inner    { padding: 13px 13px 11px; }
   .face-form     { gap: 9px; }
-  .face-title    { font-size: 17px; }
-  .face-subtitle { font-size: 12px; }
+  .face-title    { font-size: 16px; }
+  .face-subtitle { font-size: 11.5px; }
+  .face-header   { margin-bottom: 12px; }
+  .face-icon-wrap { width: 42px; height: 42px; }
+  .face-icon-wrap svg { width: 18px; height: 18px; }
 
-  .field-input   { height: 38px; font-size: 13px; padding: 0 34px 0 32px; }
+  .field-label   { font-size: 11.5px; }
+  .field-input   { height: 36px; font-size: 12.5px; padding: 0 32px 0 30px; }
   .input-icon    { width: 14px; height: 14px; left: 10px; }
   .toggle-pw     { width: 24px; height: 24px; right: 7px; }
 
-  .btn           { height: 38px; font-size: 13px; }
+  .btn           { height: 36px; font-size: 12.5px; }
   .checkbox-text { font-size: 12px; }
+  .face-footer   { gap: 8px; margin-top: 10px; padding-top: 10px; }
+  .text-link     { font-size: 12px; }
 
   .mfa-digit     { width: 38px; height: 46px; font-size: 18px; }
   .mfa-inputs    { gap: 6px; }
@@ -906,20 +924,38 @@ button, input { font-family: inherit; }
 /* ── Small mobile (≤ 370px) ── */
 @media (max-width: 370px) {
   :root {
-    --cube-w:      clamp(250px, calc(100vw - 28px), 300px);
-    --cube-h:      clamp(250px, min(calc(100vw - 28px), calc(100svh - 140px)), 300px);
+    --cube-w:      clamp(230px, min(calc(100vw - 20px), calc(100dvh - 120px)), 280px);
+    --cube-h:      clamp(230px, min(calc(100vw - 20px), calc(100dvh - 120px)), 280px);
     --cube-half-w: calc(var(--cube-w) / 2);
     --cube-half-h: calc(var(--cube-h) / 2);
     --perspective: calc(var(--cube-w) * 2.15);
     --tilt-x: -3deg;
     --tilt-y: -4deg;
   }
-  #scene-wrapper { padding: 14px 10px 20px; }
-  .face-inner    { padding: 14px 13px 11px; }
-  .face-title    { font-size: 16px; }
-  .face-subtitle { font-size: 11.5px; }
+  #scene-wrapper { padding: 10px 8px 16px; }
+  .face-inner    { padding: 10px 10px 9px; }
+  .face-title    { font-size: 15px; }
+  .face-subtitle { font-size: 11px; }
+  .face-header--compact .face-title { font-size: 15px; }
+  .face-footer { flex-wrap: wrap; }
   .mfa-digit  { width: 34px; height: 42px; font-size: 16px; }
   .mfa-inputs { gap: 5px; }
+}
+
+/* ── Short screens / landscape phones ── */
+@media (max-height: 740px) and (max-width: 900px) {
+  :root {
+    --cube-w:      clamp(240px, min(calc(100vw - 26px), calc(100dvh - 106px)), 320px);
+    --cube-h:      clamp(240px, min(calc(100vw - 26px), calc(100dvh - 106px)), 320px);
+    --cube-half-w: calc(var(--cube-w) / 2);
+    --cube-half-h: calc(var(--cube-h) / 2);
+  }
+
+  #scene-wrapper { padding: 8px 10px 12px; }
+  .face-inner { padding: 10px 10px 8px; }
+  .face-header { margin-bottom: 10px; }
+  .face-form { gap: 8px; }
+  .face-footer { margin-top: 8px; padding-top: 8px; }
 }
 
 /* ── Wide screens — give cube a bit more breathing room ── */
