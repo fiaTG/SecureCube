@@ -6,10 +6,10 @@
 /* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* ── Cube geometry ── */
-  --cube-w:      480px;   /* cube edge length */
-  --cube-h:      480px;   /* keep equal to --cube-w for true cube geometry */
-  --cube-half-w: 240px;   /* translateZ for front/back/left/right faces */
-  --cube-half-h: 240px;   /* translateZ for top/bottom faces */
+  --cube-w:      440px;   /* cube edge length */
+  --cube-h:      440px;   /* keep equal to --cube-w for true cube geometry */
+  --cube-half-w: 220px;   /* translateZ for front/back/left/right faces */
+  --cube-half-h: 220px;   /* translateZ for top/bottom faces */
   --perspective: 1100px;
 
   /* ── Cube transition ── */
@@ -846,11 +846,19 @@ button, input { font-family: inherit; }
 /* ── Tablet (≤ 620px) ── */
 @media (max-width: 620px) {
   :root {
+<<<<<<< HEAD
     --cube-w:      400px;
     --cube-h:      400px;
     --cube-half-w: 200px;
     --cube-half-h: 200px;
     --perspective: 960px;
+=======
+    --cube-w:      360px;
+    --cube-h:      360px;
+    --cube-half-w: 180px;
+    --cube-half-h: 180px;
+    --perspective: 900px;
+>>>>>>> origin/codex/improve-cube-visual-design-beejzu
     --tilt-x: -5deg;
     --tilt-y: -8deg;
   }
@@ -862,18 +870,27 @@ button, input { font-family: inherit; }
 /* ── Mobile (≤ 460px) ── */
 @media (max-width: 460px) {
   :root {
+<<<<<<< HEAD
     --cube-w:      calc(100vw - 32px);
     --cube-h:      calc(100vw - 32px);
     --cube-half-w: calc((100vw - 32px) / 2);
     --cube-half-h: calc((100vw - 32px) / 2);
     --perspective: calc((100vw - 32px) * 2.5);
+=======
+    --cube-w:      clamp(280px, calc(100vw - 44px), 340px);
+    --cube-h:      clamp(280px, calc(100vw - 44px), 340px);
+    --cube-half-w: calc(var(--cube-w) / 2);
+    --cube-half-h: calc(var(--cube-h) / 2);
+    --perspective: calc(var(--cube-w) * 2.2);
+>>>>>>> origin/codex/improve-cube-visual-design-beejzu
     --tilt-x: -4deg;
     --tilt-y: -6deg;
   }
 
-  #scene-wrapper { padding: 24px 16px; }
+  #scene-wrapper { padding: 18px 12px 24px; }
   #app-header    { padding: 0 16px; }
   .brand-name    { font-size: 15px; }
+  #cube-idle-hint { bottom: -36px; font-size: 11px; letter-spacing: 0.4px; }
 
   .face-inner    { padding: 16px 16px 13px; }
   .face-form     { gap: 9px; }
@@ -900,9 +917,18 @@ button, input { font-family: inherit; }
 /* ── Small mobile (≤ 370px) ── */
 @media (max-width: 370px) {
   :root {
+    --cube-w:      clamp(250px, calc(100vw - 28px), 300px);
+    --cube-h:      clamp(250px, calc(100vw - 28px), 300px);
+    --cube-half-w: calc(var(--cube-w) / 2);
+    --cube-half-h: calc(var(--cube-h) / 2);
+    --perspective: calc(var(--cube-w) * 2.15);
     --tilt-x: -3deg;
     --tilt-y: -4deg;
   }
+  #scene-wrapper { padding: 14px 10px 20px; }
+  .face-inner    { padding: 14px 13px 11px; }
+  .face-title    { font-size: 16px; }
+  .face-subtitle { font-size: 11.5px; }
   .mfa-digit  { width: 34px; height: 42px; font-size: 16px; }
   .mfa-inputs { gap: 5px; }
 }
