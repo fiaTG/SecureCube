@@ -12,10 +12,6 @@
   --cube-half-h: 285px;   /* translateZ for top/bottom faces */
   --perspective: 1100px;
 
-  /* ── 3D tilt (permanent stage rotation so adjacent faces are visible) ── */
-  --tilt-x: -7deg;
-  --tilt-y: -12deg;
-
   /* ── Cube transition ── */
   --cube-transition: 0.85s cubic-bezier(0.45, 0.05, 0.15, 0.95);
 
@@ -204,8 +200,28 @@ button, input { font-family: inherit; }
   width:  var(--cube-w);
   height: var(--cube-h);
   perspective: var(--perspective);
-  perspective-origin: 50% 44%;
+  perspective-origin: 50% 50%;
   position: relative;
+}
+
+/* ── Idle hint ── */
+#cube-idle-hint {
+  position: absolute;
+  bottom: -46px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#scene:has(#cube-stage.is-idle) #cube-idle-hint {
+  opacity: 1;
 }
 
 /* Atmospheric ground shadow beneath the whole cube */
@@ -223,16 +239,27 @@ button, input { font-family: inherit; }
   border-radius: 50%;
 }
 
-/* ── cube-stage — permanent tilt for 3D depth ───────────────── */
-/* This wrapper gives the cube its constant lean so adjacent faces
-   are visible as slivers, creating the real 3D illusion.
-   #cube handles only the navigation rotation on top of this tilt. */
+/* ── cube-stage — idle presentation tilt ────────────────────── */
+/* In idle state (.is-idle) the cube sits at a dramatic angle so
+   all three visible faces convey depth. On first interaction the
+   class is removed and the stage smoothly rotates to 0°/0° so
+   the active face is perfectly face-on. #cube handles face
+   navigation on top of this stage transform. */
+@keyframes cube-float {
+  0%, 100% { transform: rotateX(32deg) rotateY(34deg) translateY(0px); }
+  50%       { transform: rotateX(32deg) rotateY(34deg) translateY(-12px); }
+}
+
 #cube-stage {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  /* CSS custom properties in transforms require deg as part of the value */
-  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform: rotateX(0deg) rotateY(0deg);
+  transition: transform 1.1s cubic-bezier(0.45, 0.05, 0.15, 0.95);
+}
+
+#cube-stage.is-idle {
+  animation: cube-float 5s ease-in-out infinite;
 }
 
 /* ── #cube — navigation rotation ────────────────────────────── */

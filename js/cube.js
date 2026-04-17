@@ -22,20 +22,46 @@ const CubeController = (() => {
 
   const VALID_FACES = Object.keys(FACE_TRANSFORMS);
 
-  let _cubeEl       = null;
-  let _currentFace  = 'login';
+  let _cubeEl          = null;
+  let _stageEl         = null;
+  let _currentFace     = 'login';
   let _isTransitioning = false;
-  let _onTransitionEnd = null; // callback
+  let _onTransitionEnd = null;
+
+  // ── Stage activation (idle → interactive) ─────────────────────────────
+  function _activateStage(animate = true) {
+    if (!_stageEl || !_stageEl.classList.contains('is-idle')) return;
+    if (!animate) {
+      _stageEl.style.transition = 'none';
+      _stageEl.classList.remove('is-idle');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (_stageEl) _stageEl.style.transition = '';
+      }));
+    } else {
+      _stageEl.classList.remove('is-idle');
+    }
+  }
 
   // ── Init ──────────────────────────────────────────────────────────────
   function init() {
-    _cubeEl = document.getElementById('cube');
+    _cubeEl  = document.getElementById('cube');
+    _stageEl = document.getElementById('cube-stage');
+
     if (!_cubeEl) {
       console.error('[CubeController] #cube element not found.');
       return;
     }
 
-    // Listen for transition end to unlock _isTransitioning
+    // Start in dramatic idle presentation state
+    if (_stageEl) _stageEl.classList.add('is-idle');
+
+    // Activate on first click or focus anywhere in the scene
+    const sceneWrapper = document.getElementById('scene-wrapper');
+    if (sceneWrapper) {
+      sceneWrapper.addEventListener('click',   () => _activateStage(true), { once: true });
+      sceneWrapper.addEventListener('focusin', () => _activateStage(true), { once: true });
+    }
+
     _cubeEl.addEventListener('transitionend', (e) => {
       if (e.propertyName !== 'transform') return;
       _isTransitioning = false;
@@ -66,11 +92,11 @@ const CubeController = (() => {
       return;
     }
 
+    _activateStage(true);
     _isTransitioning = true;
     _currentFace = faceName;
     _onTransitionEnd = onDone || null;
 
-    // Apply the new transform — CSS transition handles the animation
     _cubeEl.style.transform = FACE_TRANSFORMS[faceName];
 
     // Fallback: if transitionend never fires (e.g. display:none), resolve after timeout
@@ -92,11 +118,11 @@ const CubeController = (() => {
    */
   function snapTo(faceName) {
     if (!_cubeEl || !VALID_FACES.includes(faceName)) return;
+    _activateStage(false); // skip animation — already logged in
     _cubeEl.style.transition = 'none';
     _cubeEl.style.transform  = FACE_TRANSFORMS[faceName];
     _currentFace = faceName;
     _isTransitioning = false;
-    // Re-enable transition after a paint frame
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (_cubeEl) _cubeEl.style.transition = '';
