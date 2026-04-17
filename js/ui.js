@@ -235,11 +235,7 @@ function clearAllErrors(formEl) {
 function setButtonLoading(btnId, loading) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
-  const textEl    = btn.querySelector('.btn-text');
-  const spinnerEl = btn.querySelector('.btn-spinner');
   btn.disabled = loading;
-  if (textEl)    textEl.style.opacity = loading ? '0' : '1';
-  if (spinnerEl) spinnerEl.hidden     = !loading;
 }
 
 // ════════════════════════════════════════════════════════════════════════

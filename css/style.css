@@ -624,12 +624,6 @@ button, input { font-family: inherit; }
 .btn-full { width: 100%; }
 .btn-wide { min-width: 170px; }
 
-/* Spinner inside button */
-.btn-spinner {
-  width: 17px; height: 17px;
-  animation: spin 0.7s linear infinite; flex-shrink: 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ─── Alert Banner ───────────────────────────────────────────── */
 .alert {
