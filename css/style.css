@@ -878,7 +878,7 @@ button, input { font-family: inherit; }
   #scene-wrapper { padding: 18px 12px 24px; }
   #app-header    { padding: 0 16px; }
   .brand-name    { font-size: 15px; }
-  #cube-idle-hint { bottom: -36px; font-size: 11px; letter-spacing: 0.4px; }
+  #cube-idle-hint { top: 43em;; font-size: 11px; letter-spacing: 0.4px; }
 
   .face-inner    { padding: 16px 16px 13px; }
   .face-form     { gap: 9px; }
