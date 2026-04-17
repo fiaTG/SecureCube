@@ -288,6 +288,35 @@ button, input { font-family: inherit; }
   transition: background 0.3s, border-color 0.3s;
 }
 
+/* ── Depth overlay — darkens non-active faces for 3D cube illusion ──── */
+/* Each face gets a shade overlay; only the active (front-facing) face   */
+/* has opacity: 0. This creates clear depth when the cube is tilted.     */
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity var(--cube-transition);
+}
+
+/* Directional shading — mirrors real ambient lighting */
+.face-front::after  { background: rgba(0,  5, 20, 0.00); } /* always clear */
+.face-right::after  { background: rgba(0,  5, 20, 0.42); }
+.face-left::after   { background: rgba(0,  5, 20, 0.52); }
+.face-top::after    { background: rgba(0,  5, 20, 0.28); }
+.face-bottom::after { background: rgba(0,  5, 20, 0.58); }
+.face-back::after   { background: rgba(0,  5, 20, 0.65); }
+
+/* Active (front-facing) face is fully lit — no overlay */
+#cube[data-face="login"]    .face-front::after,
+#cube[data-face="register"] .face-right::after,
+#cube[data-face="mfa"]      .face-back::after,
+#cube[data-face="forgot"]   .face-left::after,
+#cube[data-face="success"]  .face-top::after,
+#cube[data-face="settings"] .face-bottom::after { opacity: 0; }
+
 /* Subtle light shimmer on the face — enhances glass / card feel */
 .face::before {
   content: '';

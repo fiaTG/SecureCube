@@ -52,6 +52,9 @@ const CubeController = (() => {
       return;
     }
 
+    // Set initial face attribute so CSS overlays render correctly
+    _cubeEl.dataset.face = _currentFace;
+
     // Start in dramatic idle presentation state
     if (_stageEl) _stageEl.classList.add('is-idle');
 
@@ -96,6 +99,7 @@ const CubeController = (() => {
     _isTransitioning = true;
     _currentFace = faceName;
     _onTransitionEnd = onDone || null;
+    _cubeEl.dataset.face = faceName;
 
     _cubeEl.style.transform = FACE_TRANSFORMS[faceName];
 
@@ -119,6 +123,7 @@ const CubeController = (() => {
   function snapTo(faceName) {
     if (!_cubeEl || !VALID_FACES.includes(faceName)) return;
     _activateStage(false); // skip animation — already logged in
+    _cubeEl.dataset.face = faceName;
     _cubeEl.style.transition = 'none';
     _cubeEl.style.transform  = FACE_TRANSFORMS[faceName];
     _currentFace = faceName;
