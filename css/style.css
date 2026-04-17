@@ -6,10 +6,10 @@
 /* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* ── Cube geometry ── */
-  --cube-w:      440px;   /* width = depth (keeps side faces square) */
-  --cube-h:      570px;   /* height — tall enough for all form content */
-  --cube-half-w: 220px;   /* translateZ for front/back/left/right faces */
-  --cube-half-h: 285px;   /* translateZ for top/bottom faces */
+  --cube-w:      480px;   /* cube edge length */
+  --cube-h:      480px;   /* keep equal to --cube-w for true cube geometry */
+  --cube-half-w: 240px;   /* translateZ for front/back/left/right faces */
+  --cube-half-h: 240px;   /* translateZ for top/bottom faces */
   --perspective: 1100px;
 
   /* ── Cube transition ── */
@@ -43,6 +43,9 @@
   --header-border: rgba(0, 0, 0, 0.07);
   --scrollbar:     rgba(0, 0, 0, 0.10);
   --stage-shadow:  rgba(10, 25, 60, 0.30);
+  --cube-glow:    rgba(37, 99, 235, 0.22);
+  --cube-rim:     rgba(255, 255, 255, 0.42);
+  --cube-rim-dark:rgba(6, 11, 23, 0.38);
 
   /* ── Strength meter colors ── */
   --s-weak:   #ef4444;
@@ -81,6 +84,9 @@
   --accent-alpha:  rgba(37, 99, 235, 0.18);
   --scrollbar:     rgba(255, 255, 255, 0.09);
   --stage-shadow:  rgba(0, 0, 0, 0.55);
+  --cube-glow:    rgba(37, 99, 235, 0.26);
+  --cube-rim:     rgba(148, 163, 184, 0.22);
+  --cube-rim-dark:rgba(3, 8, 18, 0.58);
 }
 
 /* ─── Reset & Base ───────────────────────────────────────────── */
@@ -200,8 +206,9 @@ button, input { font-family: inherit; }
   width:  var(--cube-w);
   height: var(--cube-h);
   perspective: var(--perspective);
-  perspective-origin: 50% 50%;
+  perspective-origin: 50% 46%;
   position: relative;
+  filter: drop-shadow(0 30px 42px rgba(4, 12, 28, 0.14));
 }
 
 /* ── Idle hint ── */
@@ -228,14 +235,16 @@ button, input { font-family: inherit; }
 #scene::after {
   content: '';
   position: absolute;
-  bottom: -28px;
-  left: 12%;
-  right: 12%;
-  height: 30px;
-  background: radial-gradient(ellipse at center, var(--stage-shadow) 0%, transparent 70%);
-  filter: blur(10px);
+  bottom: -32px;
+  left: 10%;
+  right: 10%;
+  height: 42px;
+  background:
+    radial-gradient(ellipse at center, color-mix(in srgb, var(--cube-glow) 38%, transparent) 0%, transparent 72%),
+    radial-gradient(ellipse at center, var(--stage-shadow) 0%, transparent 74%);
+  filter: blur(12px);
   pointer-events: none;
-  transform: scaleY(0.5);
+  transform: scaleY(0.58);
   border-radius: 50%;
 }
 
@@ -272,13 +281,37 @@ button, input { font-family: inherit; }
   will-change: transform;
 }
 
+#cube::before,
+#cube::after {
+  content: '';
+  position: absolute;
+  inset: -2%;
+  border-radius: calc(var(--radius-xl) + 4px);
+  pointer-events: none;
+  transform: translateZ(calc(var(--cube-half-w) + 1px));
+}
+
+#cube::before {
+  background: radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--cube-glow) 55%, transparent) 0%, transparent 72%);
+  filter: blur(16px);
+  opacity: 0.78;
+}
+
+#cube::after {
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--cube-rim) 62%, transparent);
+  box-shadow: inset 0 1px 0 var(--cube-rim), inset 0 -1px 0 var(--cube-rim-dark);
+  opacity: 0.5;
+}
+
 /* ─── Cube Faces — Base ──────────────────────────────────────── */
 .face {
   position: absolute;
   top: 0; left: 0;
   width:  var(--cube-w);
   height: var(--cube-h);
-  background: var(--face-bg);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--face-bg) 92%, #ffffff 8%) 0%, var(--face-bg) 54%, color-mix(in srgb, var(--face-bg) 90%, #bcd0f7 10%) 100%);
   border: 1px solid var(--face-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--face-shadow);
@@ -298,16 +331,17 @@ button, input { font-family: inherit; }
   border-radius: inherit;
   pointer-events: none;
   z-index: 4;
-  transition: opacity var(--cube-transition);
+  transition: opacity var(--cube-transition), background var(--t-base);
+  mix-blend-mode: multiply;
 }
 
 /* Directional shading — mirrors real ambient lighting */
 .face-front::after  { background: rgba(0,  5, 20, 0.00); } /* always clear */
-.face-right::after  { background: rgba(0,  5, 20, 0.42); }
-.face-left::after   { background: rgba(0,  5, 20, 0.52); }
-.face-top::after    { background: rgba(0,  5, 20, 0.28); }
-.face-bottom::after { background: rgba(0,  5, 20, 0.58); }
-.face-back::after   { background: rgba(0,  5, 20, 0.65); }
+.face-right::after  { background: rgba(6, 12, 32, 0.38); }
+.face-left::after   { background: rgba(5, 10, 28, 0.46); }
+.face-top::after    { background: rgba(8, 16, 34, 0.22); }
+.face-bottom::after { background: rgba(3, 9, 24, 0.50); }
+.face-back::after   { background: rgba(2, 7, 18, 0.56); }
 
 /* Active (front-facing) face is fully lit — no overlay */
 #cube[data-face="login"]    .face-front::after,
@@ -322,8 +356,10 @@ button, input { font-family: inherit; }
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 50%;
-  background: linear-gradient(180deg, var(--face-edge-top) 0%, transparent 100%);
+  height: 58%;
+  background:
+    linear-gradient(180deg, var(--face-edge-top) 0%, transparent 100%),
+    radial-gradient(120% 70% at 20% 0%, rgba(255,255,255,0.22) 0%, transparent 65%);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   pointer-events: none;
   z-index: 0;
@@ -757,10 +793,10 @@ button, input { font-family: inherit; }
 /* ── Tablet (≤ 620px) ── */
 @media (max-width: 620px) {
   :root {
-    --cube-w:      380px;
-    --cube-h:      490px;
-    --cube-half-w: 190px;
-    --cube-half-h: 245px;
+    --cube-w:      400px;
+    --cube-h:      400px;
+    --cube-half-w: 200px;
+    --cube-half-h: 200px;
     --perspective: 960px;
     --tilt-x: -5deg;
     --tilt-y: -8deg;
@@ -774,9 +810,9 @@ button, input { font-family: inherit; }
 @media (max-width: 460px) {
   :root {
     --cube-w:      calc(100vw - 32px);
-    --cube-h:      calc((100vw - 32px) * 1.40);
+    --cube-h:      calc(100vw - 32px);
     --cube-half-w: calc((100vw - 32px) / 2);
-    --cube-half-h: calc((100vw - 32px) * 0.70);
+    --cube-half-h: calc((100vw - 32px) / 2);
     --perspective: calc((100vw - 32px) * 2.5);
     --tilt-x: -4deg;
     --tilt-y: -6deg;
