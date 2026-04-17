@@ -927,7 +927,7 @@ button, input { font-family: inherit; }
     --tilt-y: -4deg;
   }
   #scene-wrapper { padding: 10px 8px 16px; }
-  .face-inner    { padding: 10px 10px 9px; }
+  .face-inner    { padding: 10px 50px; }
   .face-title    { font-size: 15px; }
   .face-subtitle { font-size: 11px; }
   .face-header--compact .face-title { font-size: 15px; }
